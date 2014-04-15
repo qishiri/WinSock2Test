@@ -108,9 +108,23 @@ std::string NicoNicoTools::getThreadID(std::string server_response)
 	return threadid;
 }
 
-std::string NicoNicoTools::movieIDToThreadID(string movieID)
+std::string NicoNicoTools::getMessageServerURL(std::string server_response)
 {
-	std::string threadid;
+	std::string url;
+	int urlchk, urlpos, urllength;
+	urlchk = server_response.find("ms=");
+	if (urlchk == std::string::npos)
+		return 0;
+	urlpos = urlchk + 35;
+	urllength = server_response.find_first_of("%", urlpos) - urlpos;
+	url = server_response.substr(urlpos, urllength);
+
+	return url;
+}
+
+std::string NicoNicoTools::movieIDToCommentURL(string movieID)
+{
+	std::string threadid, msgserver, commenturl;
 	RequestString rs;
 
 	std::string geturl = "flapi.nicovideo.jp/api/getflv?v=" + movieID;
@@ -120,8 +134,10 @@ std::string NicoNicoTools::movieIDToThreadID(string movieID)
 	sourceSJIS = getSource(geturl);
 
 	threadid = getThreadID(sourceSJIS);
+	msgserver = getMessageServerURL(sourceSJIS);
+	commenturl.append("msg.nicovideo.jp/").append(msgserver).append("/api/thread?version=20090904&thread=").append(threadid).append("&res_from=-1000");
 	
-	return threadid;
+	return commenturl;
 }
 
 std::string NicoNicoTools::getSource(string URL){
@@ -154,23 +170,20 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 	std::vector<string> commentlist;
 	std::vector<std::string>::iterator it = movieidlist.begin();  // イテレータのインスタンス化
 
-	std::string threadid;
 	std::string commenturl;
 	std::string source;
 	int count = 0;
 	while (it != movieidlist.end())
 	{
 		std::cout << ++count << std::endl;
-		commenturl = "";
 		std::cout << *it << std::endl;  // *演算子で間接参照
-		threadid = movieIDToThreadID(*it);
-		commenturl.append("msg.nicovideo.jp/10/api/thread?version=20090904&thread=").append(threadid).append("&res_from=-100");
+		commenturl = movieIDToCommentURL(*it);
 		source = getSource(commenturl);
 		commentlist = getCommentList(user, source);
 
 		allcommentlist[*it] = commentlist;
 		++it;
-		Sleep(6000);
+		Sleep(5500);
 	}
 	std::cout << "end" << std::endl;
 
@@ -180,9 +193,8 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 void NicoNicoTools::showAllList(map<string, vector<string>> alllist)
 {
 	std::vector<string> commentlist;
-	std::vector<std::string>::iterator it;
-
 	for (auto itr = alllist.begin(); itr != alllist.end(); ++itr){
+		std::vector<std::string>::iterator it = alllist[itr->first].begin();  // イテレータのインスタンス化
 		std::cout << itr->first << std::endl;
 		while (it != alllist[itr->first].end())
 		{
