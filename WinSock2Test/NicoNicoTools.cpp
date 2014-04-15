@@ -171,7 +171,7 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 
 		allcommentlist[*it] = commentlist;
 		++it;
-		Sleep(1500);
+		Sleep(5000);
 	}
 	std::cout << "end" << std::endl;
 
