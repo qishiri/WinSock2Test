@@ -1,6 +1,5 @@
 #include <string>
 #include <WinSock2.h>
-#include "RequestString.h"
 #pragma once
 
 class ConnectSocket

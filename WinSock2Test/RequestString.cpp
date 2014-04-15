@@ -7,19 +7,26 @@
 #include <conio.h>
 
 
+RequestString::RequestString()
+{
+}
+
 RequestString::RequestString(std::string URL)
 {
+	setURL(URL);
+}
+
+RequestString::~RequestString()
+{
+}
+
+void RequestString::setURL(std::string URL){
 	int slashpos;
 	slashpos = URL.find_first_of("/");
 	hoststr = URL.substr(0, slashpos);
 	dirstr = URL.substr(slashpos);
 
 	addHeader("HOST", hoststr);
-}
-
-
-RequestString::~RequestString()
-{
 }
 
 string RequestString::getHostStr(){

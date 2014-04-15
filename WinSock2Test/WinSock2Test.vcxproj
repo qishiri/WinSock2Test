@@ -80,12 +80,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NicoNicoTools.cpp" />
     <ClCompile Include="RequestString.cpp" />
     <ClCompile Include="ConnectSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NicoNicoTools.h" />
     <ClInclude Include="RequestString.h" />
     <ClInclude Include="ConnectSocket.h" />
+    <ClInclude Include="Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

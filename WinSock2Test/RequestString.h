@@ -12,10 +12,11 @@ private:
 	map <string, string> header;
 
 public:
+	RequestString();
 	RequestString(string URL);
 	~RequestString();
 
-	void setString(string URL);
+	void setURL(string URL);
 
 	string getHostStr();
 	string getDirStr();

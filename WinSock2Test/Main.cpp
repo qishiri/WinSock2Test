@@ -6,37 +6,33 @@
 #include <conio.h>
 #include "RequestString.h"
 #include "ConnectSocket.h"
+#include "NicoNicoTools.h"
 #include "Util.h"
 
 int main(void)
 {
-	RequestString rs("msg.nicovideo.jp/10/api/thread?version=20090904&thread=1173108780&res_from=-100");
-	//RequestString rs("www.nicovideo.jp/tag/supercar?rss=2.0&sort=f");
+	std::string commentURL = "msg.nicovideo.jp/10/api/thread?version=20090904&thread=1173108780&res_from=-1000";
+	std::string tag = "‰A—zŽt";
+	std::string tagsearchURL = "www.nicovideo.jp/tag/" + UrlEncode(SJISToUTF8(tag.c_str())) + "?rss=2.0&sort=v";
+	RequestString thread_id;
+	//RequestString thread_id("flapi.nicovideo.jp/api/getflv?v=sm9");
 	ConnectSocket cs;
+	NicoNicoTools nt;
 
-	int sourcepos;
-	std::string message;
-	std::string source;
-	std::string sourceSJIS;
+	std::string user = "oW-7AXSCM4pEufbNq3IL1x3UNBE";
+	std::vector<std::string> commentlist, movieidlist;
+	std::map<string, vector<string>> allcommentlist;
 
-	rs.setMethod("GET");
-	rs.addHeader("Connection", "close");
-	//rs.addHeader("Cookie", "user_session=user_session_16021410_fb9c5f7cc2176bbfbfa5f6536726c08046f6fb91294f7c6607015289d2618c5d");
+	movieidlist = nt.getMovieIDList(nt.getSource(tagsearchURL));
 
-	cs.foundConnection(rs.getHostStr());
-	std::string rq = rs.makeCommand();
-	message = cs.getMessage(rq);
-	std::cout << rq << std::endl;
+	allcommentlist = nt.idListToComments(movieidlist, user);
 
-	sourcepos = message.find("\r\n\r\n") + 4;
-	source = message.substr(sourcepos);
-	
-	sourceSJIS = UTF8ToSJIS(source.c_str());
-
-	//std::cout << source.c_str() << std::endl;
-	std::cout << sourceSJIS << std::endl;
-
-	//showList(getMovieIDList(sourceSJIS));
+	nt.showAllList(allcommentlist);
+	/*
+	std::cout << "UserID: " << user << std::endl;
+	commentlist = nt.getCommentList(user, nt.getSource(commentURL));
+	nt.showList(commentlist);
+	*/
 	
 	_getch(); // “K“–‚ÈƒL[“ü—Í‘Ò‚¿
 
