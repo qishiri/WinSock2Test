@@ -112,7 +112,6 @@ std::string NicoNicoTools::movieIDToThreadID(string movieID)
 {
 	std::string threadid;
 	RequestString rs;
-	ConnectSocket cs;
 
 	std::string geturl = "flapi.nicovideo.jp/api/getflv?v=" + movieID;
 	rs.setURL(geturl);
@@ -171,7 +170,7 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 
 		allcommentlist[*it] = commentlist;
 		++it;
-		Sleep(5000);
+		Sleep(6000);
 	}
 	std::cout << "end" << std::endl;
 
@@ -180,13 +179,12 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 
 void NicoNicoTools::showAllList(map<string, vector<string>> alllist)
 {
-	std::map<string, vector<string>> allcommentlist;
 	std::vector<string> commentlist;
 	std::vector<std::string>::iterator it;
 
-	for (auto itr = allcommentlist.begin(); itr != allcommentlist.end(); ++itr){
+	for (auto itr = alllist.begin(); itr != alllist.end(); ++itr){
 		std::cout << itr->first << std::endl;
-		while (it != allcommentlist[itr->first].end())
+		while (it != alllist[itr->first].end())
 		{
 			std::cout << *it << std::endl;
 			++it;
