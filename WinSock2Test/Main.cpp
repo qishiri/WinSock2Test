@@ -11,15 +11,14 @@
 
 int main(void)
 {
-	std::string commentURL = "msg.nicovideo.jp/10/api/thread?version=20090904&thread=1173108780&res_from=-1000";
-	std::string tag = "‰A—zŽt";
+	std::string tag = "Roosan";
 	std::string tagsearchURL = "www.nicovideo.jp/tag/" + UrlEncode(SJISToUTF8(tag.c_str())) + "?rss=2.0&sort=v";
 	RequestString thread_id;
 	//RequestString thread_id("flapi.nicovideo.jp/api/getflv?v=sm9");
 	ConnectSocket cs;
 	NicoNicoTools nt;
 
-	std::string user = "oW-7AXSCM4pEufbNq3IL1x3UNBE";
+	std::string user = "oe9RXwaDOf_tN5Fam55aYJuMK_U";
 	std::vector<std::string> commentlist, movieidlist;
 	std::map<string, vector<string>> allcommentlist;
 
