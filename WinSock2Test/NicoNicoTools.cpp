@@ -175,7 +175,7 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 	int count = 0;
 	while (it != movieidlist.end())
 	{
-		std::cout << ++count << "/" << movieidlist.size << std::endl;
+		std::cout << ++count << "/" << movieidlist.size() << std::endl;
 		//std::cout << *it << std::endl;  // *演算子で間接参照
 		commenturl = movieIDToCommentURL(*it);
 		source = getSource(commenturl);
@@ -196,8 +196,6 @@ void NicoNicoTools::showAllList(map<string, vector<string>> alllist)
 		std::vector<std::string>::iterator it = alllist[itr->first].begin();  // イテレータのインスタンス化
 		if (it != alllist[itr->first].end()){
 			std::cout << itr->first << std::endl;
-		}
-		else{
 			while (it != alllist[itr->first].end())
 			{
 				std::cout << *it << std::endl;
