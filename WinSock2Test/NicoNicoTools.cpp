@@ -14,84 +14,28 @@ NicoNicoTools::~NicoNicoTools()
 {
 }
 
-std::vector<std::string> NicoNicoTools::getMovieIDList(std::string server_response)
-{
-	std::vector<std::string> list;
-	std::string buf = server_response;
-	int idchk, idpos, idlength;
-	while (1){
-		idchk = buf.find("<link>http://www.nicovideo.jp/watch/");
-		if (idchk == std::string::npos)
-			break;
-		idpos = idchk + 36;
-		buf = buf.substr(idpos);
-		idlength = buf.find_first_of("<");
-		list.push_back(buf.substr(0, idlength));
-	}
-	return list;
-}
+std::string NicoNicoTools::getSource(string URL){
+	RequestString rs(URL);
+	ConnectSocket cs;
 
-std::vector<std::string> NicoNicoTools::getUniqueList(std::vector<std::string> list)
-{
-	std::sort(list.begin(), list.end());
-	std::vector<std::string>::iterator new_end = std::unique(list.begin(), list.end());
-	list.erase(new_end, list.end());
+	std::string message, source, sourceSJIS;
+	int sourcepos;
 
-	return list;
-}
+	rs.setMethod("GET");
+	rs.addHeader("Connection", "close");
+	rs.addHeader("Cookie", "user_session=user_session_16021410_fb9c5f7cc2176bbfbfa5f6536726c08046f6fb91294f7c6607015289d2618c5d");
 
+	cs.foundConnection(rs.getHostStr());
+	std::string rq = rs.makeCommand();
+	message = cs.getMessage(rq);
+	//std::cout << rq << std::endl;
 
+	sourcepos = message.find("\r\n\r\n") + 4;
+	source = message.substr(sourcepos);
 
-void NicoNicoTools::showList(std::vector<std::string> list)
-{
-	std::vector<std::string>::iterator it = list.begin();  // イテレータのインスタンス化
-	while (it != list.end())  // 末尾要素まで
-	{
-		std::cout << *it << std::endl;  // *演算子で間接参照
-		++it;                 // イテレータを１つ進める
-	}
-}
+	sourceSJIS = UTF8ToSJIS(source.c_str());
 
-/*
-map<std::string, vector<std::string>> getCommentList(std::string user, vector<std::string> movieIDlist)
-{
-map<std::string, vector<std::string>> commentlist;
-int userchk, idpos, idlength;
-int commentchk, commentpos, commentlength;
-std::string id, comment;
-while (1){
-userchk = buf.find(user);
-if (userchk == std::string::npos)
-break;
-commentpos = userchk + 52;
-buf = buf.substr(commentpos);
-commentlength = buf.find_first_of("<");
-comment = buf.substr(0, idlength);
-
-
-}
-return list;
-}
-*/
-
-
-std::vector<std::string> NicoNicoTools::getCommentList(std::string user, std::string server_response)
-{
-	std::vector<std::string> list;
-	int userchk = 0;
-	int commentpos = 0, commentlength;
-	std::string comment;
-	std::string buf = server_response;
-	while (1){
-		userchk = buf.find(user, commentpos);
-		if (userchk == std::string::npos)
-			break;
-		commentpos = buf.find(">", userchk) + 1;
-		commentlength = buf.find_first_of("<", commentpos) - commentpos;
-		comment = buf.substr(commentpos, commentlength);
-		list.push_back(comment);
-	}
-	return list;
+	return sourceSJIS;
 }
 
 std::string NicoNicoTools::getThreadID(std::string server_response)
@@ -136,32 +80,53 @@ std::string NicoNicoTools::movieIDToCommentURL(string movieID)
 	threadid = getThreadID(sourceSJIS);
 	msgserver = getMessageServerURL(sourceSJIS);
 	commenturl.append("msg.nicovideo.jp/").append(msgserver).append("/api/thread?version=20090904&thread=").append(threadid).append("&res_from=-1000");
-	
+
 	return commenturl;
 }
 
-std::string NicoNicoTools::getSource(string URL){
-	RequestString rs(URL);
-	ConnectSocket cs;
+std::vector<std::string> NicoNicoTools::getMovieIDList(std::string server_response)
+{
+	std::vector<std::string> list;
+	std::string buf = server_response;
+	int idchk, idpos, idlength;
+	while (1){
+		idchk = buf.find("<link>http://www.nicovideo.jp/watch/");
+		if (idchk == std::string::npos)
+			break;
+		idpos = idchk + 36;
+		buf = buf.substr(idpos);
+		idlength = buf.find_first_of("<");
+		list.push_back(buf.substr(0, idlength));
+	}
+	return list;
+}
 
-	std::string message, source, sourceSJIS;
-	int sourcepos;
+std::vector<std::string> NicoNicoTools::getCommentList(std::string user, std::string server_response)
+{
+	std::vector<std::string> list;
+	int userchk = 0;
+	int commentpos = 0, commentlength;
+	std::string comment;
+	std::string buf = server_response;
+	while (1){
+		userchk = buf.find(user, commentpos);
+		if (userchk == std::string::npos)
+			break;
+		commentpos = buf.find(">", userchk) + 1;
+		commentlength = buf.find_first_of("<", commentpos) - commentpos;
+		comment = buf.substr(commentpos, commentlength);
+		list.push_back(comment);
+	}
+	return list;
+}
 
-	rs.setMethod("GET");
-	rs.addHeader("Connection", "close");
-	rs.addHeader("Cookie", "user_session=user_session_16021410_fb9c5f7cc2176bbfbfa5f6536726c08046f6fb91294f7c6607015289d2618c5d");
+std::vector<std::string> NicoNicoTools::getUniqueList(std::vector<std::string> list)
+{
+	std::sort(list.begin(), list.end());
+	std::vector<std::string>::iterator new_end = std::unique(list.begin(), list.end());
+	list.erase(new_end, list.end());
 
-	cs.foundConnection(rs.getHostStr());
-	std::string rq = rs.makeCommand();
-	message = cs.getMessage(rq);
-	//std::cout << rq << std::endl;
-
-	sourcepos = message.find("\r\n\r\n") + 4;
-	source = message.substr(sourcepos);
-
-	sourceSJIS = UTF8ToSJIS(source.c_str());
-
-	return sourceSJIS;
+	return list;
 }
 
 std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> movieidlist, std::string user)
@@ -187,6 +152,16 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 	}
 
 	return allcommentlist;
+}
+
+void NicoNicoTools::showList(std::vector<std::string> list)
+{
+	std::vector<std::string>::iterator it = list.begin();  // イテレータのインスタンス化
+	while (it != list.end())  // 末尾要素まで
+	{
+		std::cout << *it << std::endl;  // *演算子で間接参照
+		++it;                 // イテレータを１つ進める
+	}
 }
 
 void NicoNicoTools::showAllList(map<string, vector<string>> alllist)
