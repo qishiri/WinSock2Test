@@ -2,8 +2,9 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#pragma once
 
-static std::string UTF8ToSJIS(const char* utf8) {
+std::string UTF8ToSJIS(const char* utf8) {
 
 	size_t size = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, nullptr, 0);
 	WCHAR* ws = new WCHAR[size];
@@ -21,7 +22,7 @@ static std::string UTF8ToSJIS(const char* utf8) {
 	return std::move(res);
 }
 
-static std::string SJISToUTF8(const char* sjis) {
+std::string SJISToUTF8(const char* sjis) {
 
 	size_t size = MultiByteToWideChar(CP_ACP, 0, sjis, -1, nullptr, 0);
 	WCHAR* ws = new WCHAR[size];
@@ -39,7 +40,7 @@ static std::string SJISToUTF8(const char* sjis) {
 	return std::move(res);
 }
 
-static std::string UrlEncode(const std::string & str)
+std::string UrlEncode(const std::string & str)
 {
 	std::string retStr;
 

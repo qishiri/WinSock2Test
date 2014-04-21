@@ -8,6 +8,7 @@
 #include "ConnectSocket.h"
 #include "NicoNicoTools.h"
 #include "Util.h"
+#pragma once
 
 int main(void)
 {
