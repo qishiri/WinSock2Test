@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <winsock2.h>
@@ -8,7 +9,6 @@
 #include "ConnectSocket.h"
 #include "NicoNicoTools.h"
 #include "Util.h"
-#pragma once
 
 int main(void)
 {

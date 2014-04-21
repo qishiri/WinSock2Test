@@ -1,7 +1,7 @@
+#pragma once
 #include "ConnectSocket.h"
 #include <string>
 #include <winsock2.h>
-#pragma once
 
 ConnectSocket::ConnectSocket()
 {

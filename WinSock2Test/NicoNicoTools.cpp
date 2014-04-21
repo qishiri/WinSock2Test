@@ -1,3 +1,4 @@
+#pragma once
 #include "NicoNicoTools.h"
 #include <iostream>
 #include <algorithm>
@@ -5,7 +6,6 @@
 #include "RequestString.h"
 #include "ConnectSocket.h"
 #include "Util.h"
-#pragma once
 
 NicoNicoTools::NicoNicoTools()
 {

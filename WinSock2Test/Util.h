@@ -1,8 +1,8 @@
+#pragma once
 #include <Windows.h>
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#pragma once
 
 std::string UTF8ToSJIS(const char* utf8) {
 

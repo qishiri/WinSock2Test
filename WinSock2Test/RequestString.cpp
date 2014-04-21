@@ -1,3 +1,4 @@
+#pragma once
 #include "RequestString.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,7 +6,6 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
-#pragma once
 
 
 RequestString::RequestString()
