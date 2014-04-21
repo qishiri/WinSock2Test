@@ -15,7 +15,7 @@ NicoNicoTools::~NicoNicoTools()
 {
 }
 
-string getTagSearchURL(string tag){
+std::string NicoNicoTools::getTagSearchURL(string tag){
 	std::string tagsearchURL;
 	tagsearchURL = "www.nicovideo.jp/tag/" + UrlEncode(SJISToUTF8(tag.c_str())) + "?rss=2.0&sort=v";
 
