@@ -8,7 +8,6 @@
 #include "RequestString.h"
 #include "ConnectSocket.h"
 #include "NicoNicoTools.h"
-#include "Util.h"
 
 int main(void)
 {
