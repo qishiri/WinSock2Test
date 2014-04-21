@@ -13,12 +13,10 @@
 int main(void)
 {
 	std::string tag = "Roosan";
-	std::string tagsearchURL = "www.nicovideo.jp/tag/" + UrlEncode(SJISToUTF8(tag.c_str())) + "?rss=2.0&sort=v";
-	RequestString thread_id;
-	ConnectSocket cs;
+	std::string tagsearchURL = getTagSearchURL(tag);
+	std::string user = "QBkpRLSYQYrVGUeAu8YAIuEa1sE";
 	NicoNicoTools nt;
 
-	std::string user = "QBkpRLSYQYrVGUeAu8YAIuEa1sE";
 	std::vector<std::string> commentlist, movieidlist;
 	std::map<string, vector<string>> allcommentlist;
 

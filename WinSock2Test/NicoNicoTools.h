@@ -10,6 +10,7 @@ public:
 	NicoNicoTools();
 	~NicoNicoTools();
 
+	string getTagSearchURL(string tag);
 	string getSource(string URL);
 	string getThreadID(string server_response);
 	string getMessageServerURL(std::string server_response);
