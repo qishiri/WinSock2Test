@@ -53,7 +53,8 @@ std::string NicoNicoTools::getThreadID(std::string server_response)
 	idchk = server_response.find("thread_id");
 	if (idchk == std::string::npos)
 		return 0;
-	idpos = idchk + 10;
+	// idpos = idchk + 10;
+	idpos = server_response.find("=", idchk) + 1;
 	idlength = server_response.find_first_of("&", idpos) - idpos;
 	threadid = server_response.substr(idpos, idlength);
 
@@ -62,14 +63,14 @@ std::string NicoNicoTools::getThreadID(std::string server_response)
 
 std::string NicoNicoTools::getMessageServerURL(std::string server_response)
 {
-	std::string url;
-	int urlchk, urlpos, urllength;
-	urlchk = server_response.find("ms=");
-	if (urlchk == std::string::npos)
+	std::string decodedsrc, url;
+	int urlpos, urllength;
+	decodedsrc = urlDecode(server_response);
+	urlpos = decodedsrc.find("msg.nicovideo.jp");
+	if (urlpos == std::string::npos)
 		return 0;
-	urlpos = urlchk + 35;
-	urllength = server_response.find_first_of("%", urlpos) - urlpos;
-	url = server_response.substr(urlpos, urllength);
+	urllength = decodedsrc.find("/api", urlpos) - urlpos;
+	url = decodedsrc.substr(urlpos, urllength);
 
 	return url;
 }
@@ -87,7 +88,7 @@ std::string NicoNicoTools::movieIDToCommentURL(string movieID)
 
 	threadid = getThreadID(sourceSJIS);
 	msgserver = getMessageServerURL(sourceSJIS);
-	commenturl.append("msg.nicovideo.jp/").append(msgserver).append("/api/thread?version=20090904&thread=").append(threadid).append("&res_from=-1000");
+	commenturl.append(msgserver).append("/api/thread?version=20090904&thread=").append(threadid).append("&res_from=-1000");
 
 	return commenturl;
 }
@@ -101,7 +102,8 @@ std::vector<std::string> NicoNicoTools::getMovieIDList(std::string server_respon
 		idchk = buf.find("<link>http://www.nicovideo.jp/watch/", idpos);
 		if (idchk == std::string::npos)
 			break;
-		idpos = idchk + 36;
+		idpos = buf.find("sm", idchk);
+		// idpos = idchk + 36;
 		idlength = buf.find_first_of("<", idpos) - idpos;
 		list.push_back(buf.substr(idpos, idlength));
 	}
