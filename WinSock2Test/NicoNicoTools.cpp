@@ -96,15 +96,14 @@ std::vector<std::string> NicoNicoTools::getMovieIDList(std::string server_respon
 {
 	std::vector<std::string> list;
 	std::string buf = server_response;
-	int idchk, idpos, idlength;
+	int idchk, idpos = 0, idlength;
 	while (1){
-		idchk = buf.find("<link>http://www.nicovideo.jp/watch/");
+		idchk = buf.find("<link>http://www.nicovideo.jp/watch/", idpos);
 		if (idchk == std::string::npos)
 			break;
 		idpos = idchk + 36;
-		buf = buf.substr(idpos);
-		idlength = buf.find_first_of("<");
-		list.push_back(buf.substr(0, idlength));
+		idlength = buf.find_first_of("<", idpos) - idpos;
+		list.push_back(buf.substr(idpos, idlength));
 	}
 	return list;
 }
