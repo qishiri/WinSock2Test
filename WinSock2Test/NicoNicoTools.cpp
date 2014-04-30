@@ -147,9 +147,17 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 	std::string commenturl;
 	std::string source;
 	int count = 0;
+	std::string progress, remain;
+	for (int i = 0; i < (signed int)movieidlist.size(); i++){
+		remain += " ";
+	}
+	std::cout << "Downloading comments..." << std::endl;
 	while (it != movieidlist.end())
 	{
-		std::cout << ++count << "/" << movieidlist.size() << std::endl;
+		progress += "|";
+		remain = remain.substr(0, remain.length()-1);
+		std::cout << "[" << progress << remain << "]" << ++count << "/" << movieidlist.size() << "\r" << flush;
+		//std::cout << ++count << "/" << movieidlist.size() << std::endl;
 		//std::cout << *it << std::endl;  // *‰‰ŽZŽq‚ÅŠÔÚŽQÆ
 		commenturl = movieIDToCommentURL(*it);
 		source = getSource(commenturl);
@@ -159,6 +167,8 @@ std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> 
 		++it;
 		Sleep(5500);
 	}
+	std::cout << std::endl;
+	std::cout << "Finish" << std::endl;
 
 	return allcommentlist;
 }
