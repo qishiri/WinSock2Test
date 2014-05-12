@@ -2,24 +2,20 @@
 #include <string>
 #include <vector>
 #include <map>
-using namespace std;
 
-class NicoNicoTools
+namespace NicoNicoTools
 {
-public:
-	NicoNicoTools();
-	~NicoNicoTools();
-
+	using namespace std;
 	string getTagSearchURL(string tag);
 	string getSource(string URL);
 	string getThreadID(string server_response);
-	string getMessageServerURL(std::string server_response);
+	string getMessageServerURL(string server_response);
 	string movieIDToCommentURL(string movieID);
-	vector<string> getMovieIDList(std::string server_response);
+	vector<string> getMovieIDList(string server_response);
 	vector<string> getCommentList(string user, string server_response);
 	vector<string> getUniqueList(vector<string> list);
-	map<string, vector<string>> idListToComments(vector<string> movieidlist, std::string user);
+	map<string, vector<string>> idListToComments(vector<string> movieidlist, string user);
 	void showList(vector<string> list);
-	void showAllList(map < string, vector<string>> alllist);
-};
+	void showAllList(map<string, vector<string>> alllist);
+}
 
