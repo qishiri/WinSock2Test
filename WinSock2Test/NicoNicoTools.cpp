@@ -53,7 +53,7 @@ std::string NicoNicoTools::getThreadID(std::string server_response)
 	return threadid;
 }
 
-std::string NicoNicoTools::getMessageServerURL(std::string server_response)
+std::string NicoNicoTools::getMessageServerNumber(std::string server_response)
 {
 	std::string decodedsrc, url;
 	int urlpos, urllength;
@@ -79,7 +79,7 @@ std::string NicoNicoTools::movieIDToCommentURL(string movieID)
 	sourceSJIS = getSource(geturl);
 
 	threadid = getThreadID(sourceSJIS);
-	msgserver = getMessageServerURL(sourceSJIS);
+	msgserver = getMessageServerNumber(sourceSJIS);
 	commenturl.append(msgserver).append("/api/thread?version=20090904&thread=").append(threadid).append("&res_from=-1000");
 
 	return commenturl;

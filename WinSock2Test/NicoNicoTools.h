@@ -9,7 +9,7 @@ namespace NicoNicoTools
 	string getTagSearchURL(string tag);
 	string getSource(string URL);
 	string getThreadID(string server_response);
-	string getMessageServerURL(string server_response);
+	string getMessageServerNumber(string server_response);
 	string movieIDToCommentURL(string movieID);
 	vector<string> getMovieIDList(string server_response);
 	vector<string> getCommentList(string user, string server_response);
