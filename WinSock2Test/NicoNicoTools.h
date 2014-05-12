@@ -16,6 +16,7 @@ public:
 	string getMessageServerURL(std::string server_response);
 	string movieIDToCommentURL(string movieID);
 	vector<string> getMovieIDList(std::string server_response);
+	map<string, string> getMovieTitleList(std::string server_response, string movieidlist);
 	vector<string> getCommentList(string user, string server_response);
 	vector<string> getUniqueList(vector<string> list);
 	map<string, vector<string>> idListToComments(vector<string> movieidlist, std::string user);

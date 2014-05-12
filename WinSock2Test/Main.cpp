@@ -13,13 +13,16 @@ int main(void)
 {
 	std::string tag = "Roosan";
 	std::string user = "QBkpRLSYQYrVGUeAu8YAIuEa1sE";
-	std::string tagsearchURL;
+	std::string tagsearchURL, tagsearchsource;
 	NicoNicoTools nt;
 	std::vector<std::string> commentlist, movieidlist;
+	std::map<string, string> movietitlelist;
 	std::map<string, vector<string>> allcommentlist;
 
 	tagsearchURL = nt.getTagSearchURL(tag);
-	movieidlist = nt.getMovieIDList(nt.getSource(tagsearchURL));
+	tagsearchsource = nt.getSource(tagsearchURL);
+	movieidlist = nt.getMovieIDList(tagsearchsource);
+	movietitlelist = nt.getMovieTitleList(tagsearchsource, movieidlist);
 	allcommentlist = nt.idListToComments(movieidlist, user);
 	nt.showAllList(allcommentlist);
 

@@ -110,6 +110,23 @@ std::vector<std::string> NicoNicoTools::getMovieIDList(std::string server_respon
 	return list;
 }
 
+std::map<std::string, std::string> NicoNicoTools::getMovieTitleList(std::string server_response, std::string movieidlist)
+{
+	std::map<std::string, std::string> list;
+	std::string buf = server_response;
+	int titlechk, titlepos = 0, titlelength;
+	while (1){
+		titlechk = buf.find("<link>http://www.nicovideo.jp/watch/", titlepos);
+		if (titlechk == std::string::npos)
+			break;
+		titlepos = buf.find("sm", titlechk);
+		// idpos = idchk + 36;
+		titlelength = buf.find_first_of("<", titlepos) - titlepos;
+		list.push_back(buf.substr(titlepos, titlelength));
+	}
+	return list;
+}
+
 std::vector<std::string> NicoNicoTools::getCommentList(std::string user, std::string server_response)
 {
 	std::vector<std::string> list;
@@ -138,7 +155,7 @@ std::vector<std::string> NicoNicoTools::getUniqueList(std::vector<std::string> l
 	return list;
 }
 
-std::map<string, vector<string>> NicoNicoTools::idListToComments(vector<string> movieidlist, std::string user)
+std::map<std::string, vector<std::string>> NicoNicoTools::idListToComments(vector<std::string> movieidlist, std::string user)
 {
 	std::map<string, vector<std::string>> allcommentlist;
 	std::vector<string> commentlist;
@@ -183,7 +200,7 @@ void NicoNicoTools::showList(std::vector<std::string> list)
 	}
 }
 
-void NicoNicoTools::showAllList(map<string, vector<string>> alllist)
+void NicoNicoTools::showAllList(map<std::string, vector<std::string>> alllist)
 {
 	std::vector<string> commentlist;
 	for (auto itr = alllist.begin(); itr != alllist.end(); ++itr){
